@@ -899,6 +899,10 @@ pub struct Issue {
 #[derive(Clone, Debug, Default, PartialEq, Serialize)]
 #[cfg_attr(feature = "deserialize_structs", derive(Deserialize))]
 pub struct KubernetesNetworkConfigRequest {
+    /// <p>IP address family.</p>
+    #[serde(rename = "ipFamily")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub ip_family: Option<String>,
     /// <p><p>The CIDR block to assign Kubernetes service IP addresses from. If you don&#39;t specify a block, Kubernetes assigns addresses from either the 10.100.0.0/16 or 172.20.0.0/16 CIDR blocks. We recommend that you specify a block that does not overlap with resources in other networks that are peered or connected to your VPC. The block must meet the following requirements:</p> <ul> <li> <p>Within one of the following private IP address blocks: 10.0.0.0/8, 172.16.0.0.0/12, or 192.168.0.0/16.</p> </li> <li> <p>Doesn&#39;t overlap with any CIDR block assigned to the VPC that you selected for VPC.</p> </li> <li> <p>Between /24 and /12.</p> </li> </ul> <important> <p>You can only specify a custom CIDR block when you create a cluster and can&#39;t change this value once the cluster is created.</p> </important></p>
     #[serde(rename = "serviceIpv4Cidr")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -909,10 +913,18 @@ pub struct KubernetesNetworkConfigRequest {
 #[derive(Clone, Debug, Default, Deserialize, PartialEq)]
 #[cfg_attr(any(test, feature = "serialize_structs"), derive(Serialize))]
 pub struct KubernetesNetworkConfigResponse {
+    /// <p>IP address family.</p>
+    #[serde(rename = "ipFamily")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub ip_family: Option<String>,
     /// <p>The CIDR block that Kubernetes service IP addresses are assigned from. If you didn't specify a CIDR block when you created the cluster, then Kubernetes assigns addresses from either the 10.100.0.0/16 or 172.20.0.0/16 CIDR blocks. If this was specified, then it was specified when the cluster was created and it cannot be changed.</p>
     #[serde(rename = "serviceIpv4Cidr")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub service_ipv_4_cidr: Option<String>,
+    /// <p>IPv6 CIDR Block.</p>
+    #[serde(rename = "serviceIpv6Cidr")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub service_ipv_6_cidr: Option<String>,
 }
 
 /// <p>An object representing a node group launch template specification. The launch template cannot include <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateNetworkInterface.html"> <code>SubnetId</code> </a>, <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_IamInstanceProfile.html"> <code>IamInstanceProfile</code> </a>, <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RequestSpotInstances.html"> <code>RequestSpotInstances</code> </a>, <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_HibernationOptionsRequest.html"> <code>HibernationOptions</code> </a>, or <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TerminateInstances.html"> <code>TerminateInstances</code> </a>, or the node group deployment or update will fail. For more information about launch templates, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateLaunchTemplate.html"> <code>CreateLaunchTemplate</code> </a> in the Amazon EC2 API Reference. For more information about using launch templates with Amazon EKS, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html">Launch template support</a> in the Amazon EKS User Guide.</p> <p>Specify either <code>name</code> or <code>id</code>, but not both.</p>
